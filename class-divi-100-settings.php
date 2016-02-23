@@ -419,13 +419,14 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 							}
 
 						echo '</tbody></table>';
+
+						wp_nonce_field( $nonce, $nonce );
+
+						printf(
+							'<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="%s"></p>',
+							esc_attr( $this->settings['button_save_text'] )
+						);
 					} ?>
-
-					<?php wp_nonce_field( $nonce, $nonce ); ?>
-
-					<p class="submit">
-						<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo esc_attr( $this->settings['button_save_text'] ); ?>">
-					</p>
 
 				</form><!-- form -->
 			</div><!-- .wrap -->
