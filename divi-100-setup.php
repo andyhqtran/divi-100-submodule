@@ -4,9 +4,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 
-/**
- * Register Divi 100 main menu
- */
+if ( ! function_exists( 'et_divi_100_is_active' ) ) {
+	/**
+	 * Check plugin status. Activate only if current theme is Divi
+	 *
+	 * @return bool
+	 */
+	function et_divi_100_is_active() {
+		$current_theme = wp_get_theme();
+
+		if ( 'Divi' === $current_theme->get( 'Name' ) ) {
+			return true;
+		}
+
+		return false;
+	}
+}
+
 if ( ! function_exists( 'et_divi_100_add_menu' ) ) {
 	/**
 	 * Add main menu for Divi 100
@@ -14,8 +28,13 @@ if ( ! function_exists( 'et_divi_100_add_menu' ) ) {
 	function et_divi_100_add_menu() {
 		add_menu_page( 'Divi 100', 'Divi 100', 'switch_themes', 'et_divi_100_options', 'et_divi_100_options_page' );
 	}
-	add_action( 'admin_menu', 'et_divi_100_add_menu', 15 );
 
+	if ( et_divi_100_is_active() ) {
+		add_action( 'admin_menu', 'et_divi_100_add_menu', 15 );
+	}
+}
+
+if ( ! function_exists( 'et_divi_100_options_page_scripts_styles' ) ) {
 	/**
 	 * Add nescesarry styling for admin.
 	 * Note: wp_add_inline_style() strips content atribute's `/e` so hard coded styling is used
@@ -28,8 +47,13 @@ if ( ! function_exists( 'et_divi_100_add_menu' ) ) {
 		</style>
 		<?php
 	}
-	add_action( 'admin_head', 'et_divi_100_options_page_scripts_styles', 20 ); // Make sure the priority is higher than Divi's add_menu()
 
+	if ( et_divi_100_is_active() ) {
+		add_action( 'admin_head', 'et_divi_100_options_page_scripts_styles', 20 ); // Make sure the priority is higher than Divi's add_menu()
+	}
+}
+
+if ( ! function_exists( 'et_divi_100_options_page' ) ) {
 	/**
 	 * Welcome / main setup page
 	 * @return void
