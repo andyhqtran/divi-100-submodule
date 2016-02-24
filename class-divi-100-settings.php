@@ -61,6 +61,7 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 		function default_settings() {
 			return array(
 				'plugin_id'        => 'divi_100_plugin_id',
+				'preview_dir_url'  => plugin_dir_url( __FILE__ ) . '../preview/',
 				'title'            => false,
 				'description'      => false,
 				'fields'           => array(
@@ -127,7 +128,7 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 
 				wp_enqueue_script( $this->settings['plugin_id'] . '-admin_scripts', plugin_dir_url( __FILE__ ) . 'js/admin-scripts.js', $dependencies, '0.0.1', true );
 				wp_localize_script( $this->settings['plugin_id'] . '-admin_scripts', 'et_divi_100_js_params', apply_filters( 'et_divi_100_js_params', array(
-					'preview_dir_url' => plugin_dir_url( __FILE__ ) . '../preview/',
+					'preview_dir_url' => esc_url( $this->settings['preview_dir_url'] ),
 				) ) );
 			}
 		}
@@ -361,7 +362,7 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 													// Print preview
 													$has_preview   = $this->get_value( $value_id, false );
 													$preview_style = $has_preview ? sprintf( ' min-height: %1$dpx', $field['preview_height'] ) : '';
-													$preview_url   = $has_preview ? plugin_dir_url( __FILE__ ) . '../preview/' . $field['preview_prefix'] . $this->get_value( $value_id ) . '.gif' : '';
+													$preview_url   = $has_preview ? $this->settings['preview_dir_url'] . $field['preview_prefix'] . $this->get_value( $value_id ) . '.gif' : '';
 													$preview_image = $has_preview ? sprintf(
 														'<img src="%1$s" />',
 														esc_attr( $preview_url )
