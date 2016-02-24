@@ -336,9 +336,10 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 												// Select
 												case 'select':
 													printf(
-														'<select name="%1$s" id="%1$s" data-preview-prefix="%2$s">',
+														'<select name="%1$s" id="%1$s" data-preview-prefix="%2$s" data-preview-height="%3$s">',
 														esc_attr( $field_id ),
-														esc_attr( $field['preview_prefix'] )
+														esc_attr( $field['preview_prefix'] ),
+														esc_attr( $field['preview_height'] )
 													);
 
 													if ( is_array( $field['options'] ) && ! empty( $field['options'] ) ) {

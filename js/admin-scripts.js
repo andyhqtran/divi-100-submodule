@@ -29,6 +29,7 @@ jQuery(document).ready(function ($) {
 						preview_prefix   = $select.attr( 'data-preview-prefix' ),
 						$selected_option = $select.find('option:selected'),
 						selected_value   = $selected_option.val(),
+						preview_height   = parseInt( $input.attr('data-preview-height') ),
 						preview_file     = preview_prefix + selected_value,
 						$preview_wrapper = $select.parents('td').find('.option-preview'),
 						$preview;
@@ -38,7 +39,7 @@ jQuery(document).ready(function ($) {
 							src : et_divi_100_js_params.preview_dir_url + preview_file + '.gif'
 						});
 
-						$preview_wrapper.css({ 'minHeight' : 182 }).html( $preview );
+						$preview_wrapper.css({ 'minHeight' : preview_height }).html( $preview );
 					} else {
 						$preview_wrapper.css({ 'minHeight' : '' }).empty();
 					}
