@@ -92,6 +92,11 @@ if ( ! function_exists( 'et_divi_100_sanitize_alpha_color' ) ) {
 }
 
 /**
- * Load Divi 100 class file
+ * Load Divi 100 settings class file
  */
 require_once( plugin_dir_path( __FILE__ ) . 'class-divi-100-settings.php' );
+
+/**
+ * Load Divi 100 utils class file
+ */
+require_once( plugin_dir_path( __FILE__ ) . 'class-divi-100-utils.php' );
