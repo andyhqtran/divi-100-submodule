@@ -360,19 +360,21 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 													$this->render_description( $field['description' ] );
 
 													// Print preview
-													$has_preview   = $this->get_value( $value_id, false );
-													$preview_style = $has_preview ? sprintf( ' min-height: %1$dpx', $field['preview_height'] ) : '';
-													$preview_url   = $has_preview ? $this->settings['preview_dir_url'] . $field['preview_prefix'] . $this->get_value( $value_id ) . '.gif' : '';
-													$preview_image = $has_preview ? sprintf(
-														'<img src="%1$s" />',
-														esc_attr( $preview_url )
-													) : '';
+													if ( $field['has_preview'] ) {
+														$has_preview   = $this->get_value( $value_id, false );
+														$preview_style = $has_preview ? sprintf( ' min-height: %1$dpx', $field['preview_height'] ) : '';
+														$preview_url   = $has_preview ? $this->settings['preview_dir_url'] . $field['preview_prefix'] . $this->get_value( $value_id ) . '.gif' : '';
+														$preview_image = $has_preview ? sprintf(
+															'<img src="%1$s" />',
+															esc_attr( $preview_url )
+														) : '';
 
-													printf(
-														'<div class="option-preview" style="margin-top: 20px;%1$s">%2$s</div><!-- .option-preview -->',
-														esc_attr( $preview_style ),
-														$preview_image
-													);
+														printf(
+															'<div class="option-preview" style="margin-top: 20px;%1$s">%2$s</div><!-- .option-preview -->',
+															esc_attr( $preview_style ),
+															$preview_image
+														);
+													}
 
 													break;
 
