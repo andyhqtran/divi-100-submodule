@@ -126,9 +126,11 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 					wp_enqueue_media();
 				}
 
+				wp_enqueue_style( $this->settings['plugin_id'] . '-admin_style', plugin_dir_url( __FILE__ ) . '/css/admin-style.css', array(), '0.0.1' );
 				wp_enqueue_script( $this->settings['plugin_id'] . '-admin_scripts', plugin_dir_url( __FILE__ ) . 'js/admin-scripts.js', $dependencies, '0.0.1', true );
 				wp_localize_script( $this->settings['plugin_id'] . '-admin_scripts', 'et_divi_100_js_params', apply_filters( 'et_divi_100_js_params', array(
 					'preview_dir_url' => esc_url( $this->settings['preview_dir_url'] ),
+					'help_label' => esc_html__( 'Help' ),
 				) ) );
 			}
 		}
@@ -241,215 +243,223 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 			}
 
 			?>
-			<div class="wrap">
-				<?php if ( $this->settings['title'] ) { ?>
-					<h1><?php echo esc_html( $this->settings['title'] ); ?></h1>
-				<?php } ?>
 
-				<?php if ( $is_settings_updated ) { ?>
-					<div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible <?php echo $is_settings_updated_success ? '' : 'error' ?>">
-						<p>
-							<strong><?php echo esc_html( $is_settings_updated_message ); ?></strong>
-						</p>
-						<button type="button" class="notice-dismiss">
-							<span class="screen-reader-text"><?php _e( 'Dismiss this notice.' ); ?></span>
-						</button>
-					</div>
-				<?php } ?>
-
-				<form action="" method="POST">
-					<?php if ( $this->settings['description'] ) { ?>
-						<?php echo wpautop( $this->settings['description'] ); ?>
+			<div id="wrapper" class="et-divi-100-form">
+				<div id="panel-wrap">
+					<?php if ( $is_settings_updated ) { ?>
+						<div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible <?php echo $is_settings_updated_success ? '' : 'error' ?>" style="margin: 0 0 25px 0;">
+							<p>
+								<strong><?php echo esc_html( $is_settings_updated_message ); ?></strong>
+							</p>
+							<button type="button" class="notice-dismiss">
+								<span class="screen-reader-text"><?php _e( 'Dismiss this notice.' ); ?></span>
+							</button>
+						</div>
 					<?php } ?>
 
-					<?php if ( ! empty( $this->settings['fields'] ) ) {
-						echo '<table class="form-table et-divi-100-form-table"><tbody>';
+					<div id="epanel-top">
+						<button class="save-button" id="epanel-save-top">Save Changes</button>
+					</div>
 
-							// Loop fields
-							foreach ( $this->settings['fields'] as $field ) {
-								$field    = wp_parse_args( $field, $this->default_field() );
-								$value_id = $field['id'];
-								$field_id = "{$plugin_id}-{$value_id}";
-								?>
-								<tr data-type="<?php echo esc_attr( $field['type'] ); ?>">
-									<th scope="row">
-										<?php
-											if ( $field['label'] ) {
-												printf(
-													'<label for="%1$s">%2$s</label>',
-													esc_attr( $field_id ),
-													esc_attr( $field['label'] )
-												);
-											}
-										?>
-									</th>
-									<td>
-										<?php
-											// Display field based on its type
-											switch ( $field['type'] ) {
-												// Upload
-												case 'upload':
-													printf(
-														'<input name="%1$s" id="%1$s" class="input-src" type="hidden" value="%2$s">',
-														esc_attr( $field_id ),
-														esc_attr( $this->get_value( $value_id ) )
-													);
+					<?php // if ( $this->settings['description'] ) { ?>
+						<?php // echo wpautop( $this->settings['description'] ); ?>
+					<?php // } ?>
 
-													printf(
-														'<input name="%1$s-id" id="%1$s-id" class="input-id" type="hidden" value="%2$s">',
-														esc_attr( $field_id ),
-														esc_attr( $this->get_value( $value_id . '-id' ) )
-													);
+					<form action="" method="POST">
+						<div id="epanel-wrapper">
+							<div id="epanel">
+								<div id="epanel-content-wrap">
+									<div id="epanel-content">
+										<div id="epanel-header">
+											<?php if ( $this->settings['title'] ) { ?>
+												<h1 id="epanel-title"><?php echo esc_html( $this->settings['title'] ); ?></h1>
+											<?php } ?>
+										</div><!-- #wrap-general.content-div -->
+										<div id="wrap-general" class="content-div">
+											<ul class="idTabs">
+												<li class="ui-tabs-active">
+													<a href="#general-1"><?php _e( 'General' ); ?></a>
+												</li>
+											</ul><!-- .idTabs -->
+											<div id="general-1" class="tab-content">
+												<?php
+													if ( ! empty( $this->settings['fields'] ) ) {
+														// Loop fields
+														foreach ( $this->settings['fields'] as $field ) {
+															$field    = wp_parse_args( $field, $this->default_field() );
+															$value_id = $field['id'];
+															$field_id = "{$plugin_id}-{$value_id}";
+															?>
 
-													printf(
-														'<p>
-															<button id="%1$s-button-upload" class="button button-upload" data-button-active-text="%2$s" data-button-inactive-text="%3$s" data-media-uploader-title="%5$s" data-media-uploader-button-text="%6$s">%2$s</button>
-															<a href="#" id="%1$s-button-remove" class="button-remove" style="margin-left: 10px; display: none;">%4$s</a>
-														</p>',
-														esc_attr( $field_id ),
-														esc_attr( $field['button_active_text'] ),
-														esc_attr( $field['button_inactive_text'] ),
-														esc_html( $field['button_remove_text'] ),
-														esc_attr( $field['media_uploader_title'] ),
-														esc_attr( $field['media_uploader_button_text'] )
-													);
+															<div class="epanel-box" data-type="<?php echo esc_attr( $field['type'] ); ?>">
+																<div class="box-title">
+																	<?php
+																		if ( $field['label'] ) {
+																			printf(
+																				'<h3>%1$s</h3>',
+																				esc_attr( $field['label'] )
+																			);
+																		}
 
-													// Print description
-													$this->render_description( $field['description' ] );
+																		if ( $field['description' ]  ) {
+																			printf(
+																				'<div class="box-descr"><p>Desc</p></div><!-- .box-descr -->',
+																				esc_attr( $field['description'] )
+																			);
+																		}
+																	?>
+																</div><!-- .box-title -->
+																<div class="box-content">
+																	<?php
+																		// Display field based on its type
+																		switch ( $field['type'] ) {
+																			// Upload
+																			case 'upload':
+																				printf(
+																					'<input name="%1$s" id="%1$s" class="input-src" type="hidden" value="%2$s">',
+																					esc_attr( $field_id ),
+																					esc_attr( $this->get_value( $value_id ) )
+																				);
 
-													// Print preview
-													$has_preview = ( $this->get_value( $value_id, false ) && $this->get_value( $value_id, false ) );
+																				printf(
+																					'<input name="%1$s-id" id="%1$s-id" class="input-id" type="hidden" value="%2$s">',
+																					esc_attr( $field_id ),
+																					esc_attr( $this->get_value( $value_id . '-id' ) )
+																				);
 
-													$preview_image = $has_preview ? sprintf(
-														'<img src="%1$s" style="%2$s" />',
-														esc_attr( $this->get_value( $value_id ) ),
-														esc_attr( 'max-width: 100%;' )
-													) : '';
+																				printf(
+																					'<p>
+																						<button id="%1$s-button-upload" class="button button-upload" data-button-active-text="%2$s" data-button-inactive-text="%3$s" data-media-uploader-title="%5$s" data-media-uploader-button-text="%6$s" style="margin: 0;">%2$s</button>
+																						<a href="#" id="%1$s-button-remove" class="button-remove" style="margin-left: 20px; display: none; height: 40px; line-height: 40px; color: #C1C1C1;">%4$s</a>
+																					</p>',
+																					esc_attr( $field_id ),
+																					esc_attr( $field['button_active_text'] ),
+																					esc_attr( $field['button_inactive_text'] ),
+																					esc_html( $field['button_remove_text'] ),
+																					esc_attr( $field['media_uploader_title'] ),
+																					esc_attr( $field['media_uploader_button_text'] )
+																				);
 
-													printf(
-														'<div class="option-preview" id="%1$s-preview" style="%2$s">%3$s</div',
-														esc_attr( $field_id ),
-														esc_attr( 'width: 100%; margin-top: 20px;' ),
-														$preview_image
-													);
-													break;
+																				// Print preview
+																				$has_preview = ( $this->get_value( $value_id, false ) && $this->get_value( $value_id, false ) );
 
-												// Select
-												case 'select':
-													printf(
-														'<select name="%1$s" id="%1$s" data-preview-prefix="%2$s" data-preview-height="%3$s">',
-														esc_attr( $field_id ),
-														esc_attr( $field['preview_prefix'] ),
-														esc_attr( $field['preview_height'] )
-													);
+																				$preview_image = $has_preview ? sprintf(
+																					'<img src="%1$s" style="%2$s" />',
+																					esc_attr( $this->get_value( $value_id ) ),
+																					esc_attr( 'max-width: 100%;' )
+																				) : '';
 
-													if ( is_array( $field['options'] ) && ! empty( $field['options'] ) ) {
-														foreach ( $field['options'] as $option_value => $option_label ) {
-															printf(
-																'<option value="%1$s" %3$s>%2$s</option>',
-																esc_attr( $option_value ),
-																esc_attr( $option_label ),
-																"{$option_value}" === $this->get_value( $value_id ) ? 'selected="selected"' : ''
-															);
+																				printf(
+																					'<div class="option-preview" id="%1$s-preview" style="%2$s">%3$s</div>',
+																					esc_attr( $field_id ),
+																					esc_attr( 'width: 100%; margin-top: 20px;' ),
+																					$preview_image
+																				);
+																				break;
+
+																			// Select
+																			case 'select':
+																				printf(
+																					'<select name="%1$s" id="%1$s" data-preview-prefix="%2$s" data-preview-height="%3$s">',
+																					esc_attr( $field_id ),
+																					esc_attr( $field['preview_prefix'] ),
+																					esc_attr( $field['preview_height'] )
+																				);
+
+																				if ( is_array( $field['options'] ) && ! empty( $field['options'] ) ) {
+																					foreach ( $field['options'] as $option_value => $option_label ) {
+																						printf(
+																							'<option value="%1$s" %3$s>%2$s</option>',
+																							esc_attr( $option_value ),
+																							esc_attr( $option_label ),
+																							"{$option_value}" === $this->get_value( $value_id ) ? 'selected="selected"' : ''
+																						);
+																					}
+																				}
+
+																				echo '</select>';
+
+																				// Print preview
+																				if ( $field['has_preview'] ) {
+																					$has_preview   = $this->get_value( $value_id, false );
+																					$preview_style = $has_preview ? sprintf( ' min-height: %1$dpx', $field['preview_height'] ) : '';
+																					$preview_url   = $has_preview ? $this->settings['preview_dir_url'] . $field['preview_prefix'] . $this->get_value( $value_id ) . '.gif' : '';
+																					$preview_image = $has_preview ? sprintf(
+																						'<img src="%1$s" />',
+																						esc_attr( $preview_url )
+																					) : '';
+
+																					printf(
+																						'<div class="option-preview" style="margin-top: 20px;%1$s">%2$s</div><!-- .option-preview -->',
+																						esc_attr( $preview_style ),
+																						$preview_image
+																					);
+																				}
+
+																				break;
+
+																			case 'color':
+																				printf(
+																					'<input type="text" id="%1$s" name="%1$s" placeholder="%2$s" value="%3$s" class="regular-text colorpicker" readonly />',
+																					esc_attr( $field_id ),
+																					esc_attr( $field['placeholder'] ),
+																					esc_attr( $this->get_value( $value_id ) )
+																				);
+																				break;
+
+																			// URL
+																			case 'url':
+																				printf(
+																					'<input type="text" id="%1$s" name="%1$s" placeholder="%2$s" value="%3$s" />',
+																					esc_attr( $field_id ),
+																					esc_attr( $field['placeholder'] ),
+																					esc_attr( $this->get_value( $value_id ) )
+																				);
+																				break;
+
+																			// Text
+																			default:
+																				printf(
+																					'<input type="text" id="%1$s" name="%1$s" placeholder="%2$s" value="%3$s" />',
+																					esc_attr( $field_id ),
+																					esc_attr( $field['placeholder'] ),
+																					esc_attr( $this->get_value( $value_id ) )
+																				);
+																				break;
+																		}
+																	?>
+																</div><!-- .box-content -->
+																<span class="box-description"></span>
+															</div><!-- .epanel-box -->
+															<?php
 														}
 													}
+												?>
+											</div> <!-- #general-1.tab-content -->
 
-													echo '</select>';
+										</div><!-- #epanel-header -->
+									</div><!-- #epanel-content -->
+								</div><!-- #epanel-content-wrap -->
+							</div><!-- #epanel -->
+						</div><!-- #epanel-wrapper -->
 
-													// Print description
-													$this->render_description( $field['description' ] );
+						<div id="epanel-bottom">
+							<?php
+								// Print nonce
+								wp_nonce_field( $nonce, $nonce );
 
-													// Print preview
-													if ( $field['has_preview'] ) {
-														$has_preview   = $this->get_value( $value_id, false );
-														$preview_style = $has_preview ? sprintf( ' min-height: %1$dpx', $field['preview_height'] ) : '';
-														$preview_url   = $has_preview ? $this->settings['preview_dir_url'] . $field['preview_prefix'] . $this->get_value( $value_id ) . '.gif' : '';
-														$preview_image = $has_preview ? sprintf(
-															'<img src="%1$s" />',
-															esc_attr( $preview_url )
-														) : '';
+								// Print submit button
+								printf(
+									'<button class="save-button" name="save" id="epanel-save">%s</button>',
+									esc_attr( $this->settings['button_save_text'] )
+								);
+							?>
+						</div><!-- #epanel-bottom -->
+					</form>
 
-														printf(
-															'<div class="option-preview" style="margin-top: 20px;%1$s">%2$s</div><!-- .option-preview -->',
-															esc_attr( $preview_style ),
-															$preview_image
-														);
-													}
-
-													break;
-
-												case 'color':
-													printf(
-														'<input type="text" id="%1$s" name="%1$s" placeholder="%2$s" value="%3$s" class="regular-text colorpicker" readonly />',
-														esc_attr( $field_id ),
-														esc_attr( $field['placeholder'] ),
-														esc_attr( $this->get_value( $value_id ) )
-													);
-
-													// Print description
-													$this->render_description( $field['description' ] );
-													break;
-
-												// URL
-												case 'url':
-													printf(
-														'<input type="url" id="%1$s" name="%1$s" placeholder="%2$s" value="%3$s" class="regular-text" />',
-														esc_attr( $field_id ),
-														esc_attr( $field['placeholder'] ),
-														esc_attr( $this->get_value( $value_id ) )
-													);
-
-													// Print description
-													$this->render_description( $field['description' ] );
-													break;
-
-												// Text
-												default:
-													printf(
-														'<input type="text" id="%1$s" name="%1$s" placeholder="%2$s" value="%3$s" class="regular-text" />',
-														esc_attr( $field_id ),
-														esc_attr( $field['placeholder'] ),
-														esc_attr( $this->get_value( $value_id ) )
-													);
-
-													// Print description
-													$this->render_description( $field['description' ] );
-													break;
-											}
-										?>
-									</td>
-								</tr>
-								<?php
-							}
-
-						echo '</tbody></table>';
-
-						wp_nonce_field( $nonce, $nonce );
-
-						printf(
-							'<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="%s"></p>',
-							esc_attr( $this->settings['button_save_text'] )
-						);
-					} ?>
-
-				</form><!-- form -->
-			</div><!-- .wrap -->
+				</div><!-- #panel-wrap -->
+			</div><!-- #wrapper -->
 			<?php
-		}
-
-		/**
-		 * Print description field
-		 *
-		 * @param string|bool
-		 * @return void
-		 */
-		function render_description( $description ) {
-			if ( $description ) {
-				printf(
-					'<p class="description">%1$s</p>',
-					esc_html( $description )
-				);
-			}
 		}
 	}
 }

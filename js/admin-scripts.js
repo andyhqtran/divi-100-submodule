@@ -1,8 +1,8 @@
 jQuery(document).ready(function ($) {
-	var $form  = $('.et-divi-100-form-table');
+	var $form  = $('.et-divi-100-form');
 
 	// Loop each option
-	$form.find('tr').each(function(){
+	$form.find('.epanel-box').each(function(){
 		var $field = $(this),
 			type = $field.attr('data-type'),
 			$input,
@@ -31,7 +31,7 @@ jQuery(document).ready(function ($) {
 						selected_value   = $selected_option.val(),
 						preview_height   = parseInt( $input.attr('data-preview-height') ),
 						preview_file     = preview_prefix + selected_value,
-						$preview_wrapper = $select.parents('td').find('.option-preview'),
+						$preview_wrapper = $select.parents('.box-content').find('.option-preview'),
 						$preview;
 
 					if( selected_value !== '' ) {
@@ -130,5 +130,38 @@ jQuery(document).ready(function ($) {
 				});
 				break;
 		}
-	})
+	});
+
+	// Top button
+	$('#epanel-save-top').click(function(e){
+		e.preventDefault();
+
+		$('#epanel-save').trigger('click');
+	});
+
+	// Help box
+	$(".box-description").click(function(){
+		var descheading = $(this).parent('.epanel-box').find(".box-title h3").html();
+		var desctext = $(this).parent('.epanel-box').find(".box-title .box-descr").html();
+
+		$('body').append("<div id='custom-lbox'><div class='box-desc'><div class='box-desc-top'>"+ et_divi_100_js_params.help_label +"</div><div class='box-desc-content'><h3>"+descheading+"</h3>"+desctext+"<div class='lightboxclose'></div> </div> <div class='box-desc-bottom'></div>	</div></div>");
+
+		$( '.lightboxclose' ).click( function() {
+			et_pb_close_modal( $( '#custom-lbox' ) );
+		});
+	});
+
+	function et_pb_close_modal( $overlay, no_overlay_remove ) {
+		var $modal_container = $overlay;
+
+		// add class to apply the closing animation to modal
+		$modal_container.addClass( 'et_pb_modal_closing' );
+
+		//remove the modal with overlay when animation complete
+		setTimeout( function() {
+			if ( 'no_remove' !== no_overlay_remove ) {
+				$modal_container.remove();
+			}
+		}, 600 );
+	}
 });
