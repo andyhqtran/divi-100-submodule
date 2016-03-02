@@ -61,7 +61,7 @@ if ( ! class_exists( 'Divi_100_Main_Menu' ) ) {
 		 * Constructing the class
 		 */
 		function __construct() {
-			if ( et_divi_100_is_active() ) {
+			if ( is_admin() && et_divi_100_is_active() ) {
 				add_action( 'admin_menu', array( $this, 'add_menu' ), 15 );
 				add_action( 'admin_head', array( $this, 'add_scripts_styles' ), 20 ); // Make sure the priority is higher than Divi's add_menu()
 			}
