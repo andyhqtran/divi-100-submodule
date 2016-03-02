@@ -4,12 +4,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 
+/**
+ * Check plugin status. Activate only if current theme is Divi
+ *
+ * @return bool
+ */
 if ( ! function_exists( 'et_divi_100_is_active' ) ) {
-	/**
-	 * Check plugin status. Activate only if current theme is Divi
-	 *
-	 * @return bool
-	 */
 	function et_divi_100_is_active() {
 		$current_theme = wp_get_theme();
 
@@ -21,62 +21,51 @@ if ( ! function_exists( 'et_divi_100_is_active' ) ) {
 	}
 }
 
-if ( ! function_exists( 'et_divi_100_add_menu' ) ) {
-	/**
-	 * Add main menu for Divi 100
-	 */
-	function et_divi_100_add_menu() {
-		add_menu_page( 'Divi 100', 'Divi 100', 'switch_themes', 'et_divi_100_options', 'et_divi_100_options_page' );
-	}
-
-	if ( et_divi_100_is_active() ) {
-		add_action( 'admin_menu', 'et_divi_100_add_menu', 15 );
+/**
+ * Get registered Divi 100 settings
+ *
+ * @return array
+ */
+if ( ! function_exists( 'et_divi_100_settings' ) ) {
+	function et_divi_100_settings() {
+		return apply_filters( 'et_divi_100_settings', array() );
 	}
 }
 
-if ( ! function_exists( 'et_divi_100_options_page_scripts_styles' ) ) {
-	/**
-	 * Add nescesarry styling for admin.
-	 * Note: wp_add_inline_style() strips content atribute's `/e` so hard coded styling is used
-	 * @return void
-	 */
-	function et_divi_100_options_page_scripts_styles() {
-		?>
-		<style type="text/css">
-			li.toplevel_page_et_divi_100_options .dashicons-admin-generic:before { font-family: 'ETmodules'; content: '\e625'; width: 30px !important; font-size: 30px !important; margin-top: -5px; }
-		</style>
-		<?php
-	}
+/**
+ * Get latest Divi 100 setup dir path based on Divi 100 settings
+ *
+ * @return string of latest Divi 100's setup dir path
+ */
+if ( ! function_exists( 'et_divi_100_get_setup_dir_path' ) ) {
+	function et_divi_100_get_setup_dir_path() {
+		// Get Divi 100 settings
+		$plugins = et_divi_100_settings();
 
-	if ( et_divi_100_is_active() ) {
-		add_action( 'admin_head', 'et_divi_100_options_page_scripts_styles', 20 ); // Make sure the priority is higher than Divi's add_menu()
-	}
-}
+		// Pluck the version number
+		$versions = wp_list_pluck( $plugins, 'plugin_version' );
 
-if ( ! function_exists( 'et_divi_100_options_page' ) ) {
-	/**
-	 * Welcome / main setup page
-	 * @return void
-	 */
-	function et_divi_100_options_page() {
-		?>
-		<div class="wrap">
-			<h2><?php _e( 'Welcome to Divi 100!', 'custom-search-fields' ); ?></h2>
-			<?php
-				// Epic saga of Divi 100 goes here
-			?>
-		</div><!-- /.wrap -->
-		<?php
+		// Sort from latest to oldest
+		arsort( $versions );
+
+		// Get the latest version's plugin slug
+		$latest_version_slug = current( array_keys( $versions ) );
+
+		// Check whether latest version's setup dir path exist
+		$is_setup_exist = ( $latest_version_slug && isset( $plugins[ $latest_version_slug ] ) && $plugins[ $latest_version_slug ]['plugin_dir_path'] );
+
+		// Return latest version's plugin dir path
+		return $is_setup_exist ? $plugins[ $latest_version_slug ]['plugin_dir_path'] . 'divi-100-setup/' : plugin_dir_path( __FILE__ );
 	}
 }
 
+/**
+ * Sanitize hexacode or RGBA color
+ *
+ * @param string
+ * @return string|bool
+ */
 if ( ! function_exists( 'et_divi_100_sanitize_alpha_color' ) ) {
-	/**
-	 * Sanitize hexacode or RGBA color
-	 *
-	 * @param string
-	 * @return string|bool
-	 */
 	function et_divi_100_sanitize_alpha_color( $color ) {
 		// Trim unneeded whitespace
 		$color = str_replace( ' ', '', $color );
@@ -116,11 +105,16 @@ if ( ! function_exists( 'et_divi_100_sanitize_alpha_color' ) ) {
 }
 
 /**
+ * Load Divi 100 main-menu file
+ */
+require_once( et_divi_100_get_setup_dir_path() . 'class-divi-100-main-menu.php' );
+
+/**
  * Load Divi 100 settings class file
  */
-require_once( plugin_dir_path( __FILE__ ) . 'class-divi-100-settings.php' );
+require_once( et_divi_100_get_setup_dir_path() . 'class-divi-100-settings.php' );
 
 /**
  * Load Divi 100 utils class file
  */
-require_once( plugin_dir_path( __FILE__ ) . 'class-divi-100-utils.php' );
+require_once( et_divi_100_get_setup_dir_path() . 'class-divi-100-utils.php' );
