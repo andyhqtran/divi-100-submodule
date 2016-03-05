@@ -852,6 +852,7 @@ input.checkbox.yes_no_button {
 	display: inline-block;
 }
 
+#epanel-content .epanel-box .reset-color,
 #epanel-content .epanel-box .upload_image_button,
 #epanel-content .epanel-box .upload_image_reset,
 #epanel-content .epanel-box .button{
@@ -1335,6 +1336,10 @@ left: 0px;
 
 #epanel-ajax-saving.success-animation img {
 	display: none;
+}
+
+#epanel-content .epanel-box .reset-color {
+	margin: 10px 0 0 0;
 }
 
 /**

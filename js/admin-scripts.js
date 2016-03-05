@@ -6,17 +6,26 @@ jQuery(document).ready(function ($) {
 		var $field = $(this),
 			type = $field.attr('data-type'),
 			$input,
+			$reset_button,
 			et_divi_100_file_frame;
 
 		switch( type ) {
 			case "color":
 				$input = $field.find('input.colorpicker');
 
+				$reset_button = $field.find( '.reset-color' );
+
 				// Setup colorpicker
 				$input.iris({
 					hide : false,
 					width : 350,
 					palettes : true
+				});
+
+				// Reset color
+				$reset_button.click( function(e) {
+					e.preventDefault();
+					$input.iris( 'color', $input.attr( 'data-default' ) );
 				});
 
 				break;

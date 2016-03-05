@@ -49,7 +49,8 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 				'button_inactive_text'       => __( 'Select' ),
 				'button_remove_text'         => __( 'Remove' ),
 				'media_uploader_title'       => __( 'Select Image' ),
-				'media_uploader_button_text' => __( 'Use This Image' )
+				'media_uploader_button_text' => __( 'Use This Image' ),
+				'default'                    => '#888888',
 			);
 		}
 
@@ -400,11 +401,19 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 
 																			case 'color':
 																				printf(
-																					'<input type="text" id="%1$s" name="%1$s" placeholder="%2$s" value="%3$s" class="regular-text colorpicker" readonly />',
+																					'<input type="text" id="%1$s" name="%1$s" placeholder="%2$s" value="%3$s" class="regular-text colorpicker" data-default="%4$s" readonly />',
 																					esc_attr( $field_id ),
 																					esc_attr( $field['placeholder'] ),
-																					esc_attr( $this->get_value( $value_id ) )
+																					esc_attr( $this->get_value( $value_id ) ),
+																					esc_attr( $field['default'] )
 																				);
+
+																				printf(
+																					'<button class="reset-color" data-for="%1$s">%2$s</button>',
+																					esc_attr( $field_id ),
+																					esc_html__( 'Reset Color' )
+																				);
+
 																				break;
 
 																			// URL
