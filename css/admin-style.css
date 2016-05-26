@@ -464,7 +464,8 @@ h1#epanel-title {
 /**
  * Yes / No toggle styling
  */
-input.checkbox.yes_no_button {
+input.checkbox.yes_no_button,
+.et-pb-toggle-select {
 	display: none;
 }
 

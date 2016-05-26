@@ -105,6 +105,24 @@ if ( ! function_exists( 'et_divi_100_sanitize_alpha_color' ) ) {
 }
 
 /**
+ * Sanitize toggle value
+ *
+ * @param string
+ * @return string
+ */
+if ( ! function_exists( 'et_divi_100_sanitize_toggle' ) ) {
+	function et_divi_100_sanitize_toggle( $toggle, $default = 'off' ) {
+		$valid_values = array( 'on', 'off' );
+
+		if ( ! in_array( $toggle, $valid_values ) ) {
+			return $default;
+		} else {
+			return $toggle;
+		}
+	}
+}
+
+/**
  * Load Divi 100 main-menu file
  */
 require_once( et_divi_100_get_setup_dir_path() . 'class-divi-100-main-menu.php' );

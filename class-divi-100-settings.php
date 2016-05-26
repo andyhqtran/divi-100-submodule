@@ -399,6 +399,44 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 
 																				break;
 
+																			// Toggle
+																			case 'toggle':
+																				printf(
+																					'<select name="%1$s" id="%1$s" data-preview-prefix="%2$s" data-preview-height="%3$s" class="et-pb-toggle-select">',
+																					esc_attr( $field_id ),
+																					esc_attr( $field['preview_prefix'] ),
+																					esc_attr( $field['preview_height'] )
+																				);
+
+																				$toggle_options = array( 'off', 'on' );
+
+																				$selected_value = et_divi_100_sanitize_toggle( $this->get_value( $value_id ) );
+
+																				foreach ( $toggle_options as $option_value ) {
+																					printf(
+																						'<option value="%1$s" %2$s>%1$s</option>',
+																						esc_attr( $option_value ),
+																						"{$option_value}" === $selected_value ? 'selected="selected"' : ''
+																					);
+																				}
+
+																				echo '</select>';
+
+																				echo sprintf(
+																					'<div class="et_pb_yes_no_button et_pb_%1$s_state" style="max-width: 195px;">
+																						<span class="et_pb_value_text et_pb_on_value">%2$s</span>
+																						<span class="et_pb_button_slider"></span>
+																						<span class="et_pb_value_text et_pb_off_value">%3$s</span>
+																					</div>',
+																					esc_attr( $selected_value ),
+																					esc_html__( 'Enable' ),
+																					esc_html__( 'Disable' )
+																				);
+
+																				echo '</select>';
+
+																				break;
+
 																			case 'color':
 																				printf(
 																					'<input type="text" id="%1$s" name="%1$s" placeholder="%2$s" value="%3$s" class="regular-text colorpicker" data-default="%4$s" readonly />',
