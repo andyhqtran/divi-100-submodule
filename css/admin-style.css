@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'etbuilder';
-	src:url('../../../../../themes/Divi/includes/builder/fonts/etbuilder_v2_6.eot');
-	src:url('../../../../../themes/Divi/includes/builder/fonts/etbuilder_v2_6.eot?#iefix') format('embedded-opentype'),
-		url('../../../../../themes/Divi/includes/builder/fonts/etbuilder_v2_6.woff') format('woff'),
-		url('../../../../../themes/Divi/includes/builder/fonts/etbuilder_v2_6.ttf') format('truetype'),
-		url('../../../../../themes/Divi/includes/builder/fonts/etbuilder_v2_6.svg#etbuilder') format('svg');
+	src:url('../../../../../themes/Divi/includes/builder/fonts/etbuilder_v2_7.eot');
+	src:url('../../../../../themes/Divi/includes/builder/fonts/etbuilder_v2_7.eot?#iefix') format('embedded-opentype'),
+		url('../../../../../themes/Divi/includes/builder/fonts/etbuilder_v2_7.woff') format('woff'),
+		url('../../../../../themes/Divi/includes/builder/fonts/etbuilder_v2_7.ttf') format('truetype'),
+		url('../../../../../themes/Divi/includes/builder/fonts/etbuilder_v2_7.svg#etbuilder') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
