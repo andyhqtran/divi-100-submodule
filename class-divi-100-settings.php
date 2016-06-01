@@ -466,17 +466,17 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 
 																			case 'color':
 																				printf(
-																					'<input type="text" id="%1$s" name="%1$s" placeholder="%2$s" value="%3$s" class="regular-text colorpicker" data-default="%4$s" readonly />',
+																					'<button class="reset-color" data-for="%1$s">%2$s</button>',
+																					esc_attr( $field_id ),
+																					esc_html__( 'Reset Color' )
+																				);
+
+																				printf(
+																					'<input type="text" id="%1$s" name="%1$s" placeholder="%2$s" value="%3$s" class="regular-text colorpicker" data-default="%4$s" />',
 																					esc_attr( $field_id ),
 																					esc_attr( $field['placeholder'] ),
 																					esc_attr( $this->get_value( $value_id ) ),
 																					esc_attr( $field['default'] )
-																				);
-
-																				printf(
-																					'<button class="reset-color" data-for="%1$s">%2$s</button>',
-																					esc_attr( $field_id ),
-																					esc_html__( 'Reset Color' )
 																				);
 
 																				break;

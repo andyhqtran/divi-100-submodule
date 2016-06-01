@@ -403,6 +403,7 @@ h1#epanel-title {
 	vertical-align: top;
 	padding: 0 0 0 30px;
 	box-sizing: border-box;
+	position: relative;
 }
 
 #epanel-content .epanel-box-small-1 .box-content,
@@ -1062,11 +1063,23 @@ input.checkbox.yes_no_button,
 	width: 356px;
 	height: 176px;
 	overflow: hidden;
-	position: absolute;
+	position: relative;
 	background: url(../images/custom_background.png);
 	font-family: Arial, Helvetica, sans-serif;
-	display: none;
 	margin-left: 40px;
+}
+
+#epanel-content .epanel-box input.colorpicker {
+	width: 221px;
+	height: 40px;
+	float: none;
+	margin-bottom: 10px;
+}
+
+#epanel-content .epanel-box .reset-color {
+	position: absolute;
+	top: 1px;
+	left: 260px;
 }
 
 .colorpicker_color {
@@ -1337,10 +1350,6 @@ left: 0px;
 
 #epanel-ajax-saving.success-animation img {
 	display: none;
-}
-
-#epanel-content .epanel-box .reset-color {
-	margin: 10px 0 0 0;
 }
 
 /**
