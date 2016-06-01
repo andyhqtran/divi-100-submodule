@@ -304,7 +304,7 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 
 																		if ( $field['description' ]  ) {
 																			printf(
-																				'<div class="box-descr"><p>Desc</p></div><!-- .box-descr -->',
+																				'<div class="box-descr"><p>%1$s</p></div><!-- .box-descr -->',
 																				esc_attr( $field['description'] )
 																			);
 																		}
