@@ -62,6 +62,7 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 		function default_settings() {
 			return array(
 				'plugin_id'        => 'divi_100_plugin_id',
+				'plugin_slug'      => 'plugin_slug',
 				'preview_dir_url'  => plugin_dir_url( __FILE__ ) . '../preview/',
 				'title'            => false,
 				'description'      => false,
@@ -111,12 +112,25 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 		}
 
 		/**
+		 * Add nescesarry styling for admin.
+		 * Note: wp_add_inline_style() strips content atribute's `/e` so hard coded styling is used
+		 * @return void
+		 */
+		function add_main_menu_scripts_styles() {
+			?>
+			<style type="text/css">
+				li.toplevel_page_et_divi_100_options .dashicons-admin-generic:before { font-family: 'ETmodules'; content: '\e625'; width: 30px !important; font-size: 30px !important; margin-top: -5px; }
+			</style>
+			<?php
+		}
+
+		/**
 		 * Enqueue dashboard scripts
 		 *
 		 * @return void
 		 */
 		function enqueue_scripts() {
-			if ( isset( $_GET['page'] ) && $this->settings['plugin_id'] === $_GET['page'] ) {
+			if ( isset( $_GET['page'] ) && ( $this->settings['plugin_id'] === $_GET['page'] || 'et_divi_100_options' === $_GET['page'] ) ) {
 				$dependencies = array( 'jquery' );
 
 				if ( $this->has_field_type( 'color' ) ) {
@@ -141,14 +155,27 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 		 * @return void
 		 */
 		function add_submenu() {
-			add_submenu_page(
-				'et_divi_100_options',
-				esc_html( $this->settings['title'] ),
-				esc_html( $this->settings['title'] ),
-				'switch_themes',
-				$this->settings['plugin_id'],
-				array( $this, 'render_settings' )
-			);
+			if ( et_divi_100_get_most_updated_plugin_slug() == $this->settings['plugin_slug'] ) {
+				add_menu_page( 'Divi 100', 'Divi 100', 'switch_themes', 'et_divi_100_options', array( $this, 'render_settings' ) );
+				add_submenu_page(
+					'et_divi_100_options',
+					esc_html( $this->settings['title'] ),
+					esc_html( $this->settings['title'] ),
+					'switch_themes',
+					'et_divi_100_options',
+					array( $this, 'render_settings' )
+				);
+				add_action( 'admin_head', array( $this, 'add_main_menu_scripts_styles' ), 20 ); // Make sure the priority is higher than Divi's add_menu()
+			} else {
+				add_submenu_page(
+					'et_divi_100_options',
+					esc_html( $this->settings['title'] ),
+					esc_html( $this->settings['title'] ),
+					'switch_themes',
+					$this->settings['plugin_id'],
+					array( $this, 'render_settings' )
+				);
+			}
 		}
 
 		/**

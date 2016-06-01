@@ -33,12 +33,12 @@ if ( ! function_exists( 'et_divi_100_settings' ) ) {
 }
 
 /**
- * Get latest Divi 100 setup dir path based on Divi 100 settings
+ * Get plugin slug which has the most updated Divi 100 setup dir
  *
- * @return string of latest Divi 100's setup dir path
+ * @return string
  */
-if ( ! function_exists( 'et_divi_100_get_setup_dir_path' ) ) {
-	function et_divi_100_get_setup_dir_path() {
+if ( ! function_exists( 'et_divi_100_get_most_updated_plugin_slug' ) ) {
+	function et_divi_100_get_most_updated_plugin_slug() {
 		// Get Divi 100 settings
 		$plugins = et_divi_100_settings();
 
@@ -50,6 +50,20 @@ if ( ! function_exists( 'et_divi_100_get_setup_dir_path' ) ) {
 
 		// Get the latest version's plugin slug
 		$latest_version_slug = current( array_keys( $versions ) );
+
+		return apply_filters( 'et_divi_100_get_most_updated_plugin_slug', $latest_version_slug );
+	}
+}
+
+/**
+ * Get latest Divi 100 setup dir path based on Divi 100 settings
+ *
+ * @return string of latest Divi 100's setup dir path
+ */
+if ( ! function_exists( 'et_divi_100_get_setup_dir_path' ) ) {
+	function et_divi_100_get_setup_dir_path() {
+		// Get the latest version's plugin slug
+		$latest_version_slug = et_divi_100_get_most_updated_plugin_slug();
 
 		// Check whether latest version's setup dir path exist
 		$is_setup_exist = ( $latest_version_slug && isset( $plugins[ $latest_version_slug ] ) && $plugins[ $latest_version_slug ]['plugin_dir_path'] );
@@ -121,11 +135,6 @@ if ( ! function_exists( 'et_divi_100_sanitize_toggle' ) ) {
 		}
 	}
 }
-
-/**
- * Load Divi 100 main-menu file
- */
-require_once( et_divi_100_get_setup_dir_path() . 'class-divi-100-main-menu.php' );
 
 /**
  * Load Divi 100 settings class file
