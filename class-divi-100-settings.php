@@ -432,7 +432,7 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 																					$preview_url   = $has_preview ? $this->settings['preview_dir_url'] . $field['preview_prefix'] . $this->get_value( $value_id ) . '.gif' : '';
 																					$preview_image = $has_preview ? sprintf(
 																						'<img src="%1$s" />',
-																						esc_attr( $preview_url )
+																						esc_url( $preview_url )
 																					) : '';
 
 																					printf(

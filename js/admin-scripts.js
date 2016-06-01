@@ -104,7 +104,7 @@ jQuery(document).ready(function ($) {
 						et_divi_100_file_frame = wp.media.frames.et_divi_100_file_frame = wp.media({
 							title: media_uploader_title,
 							button: {
-								text: media_uploader_button_text,
+								text: media_uploader_button_text
 							},
 							multiple: false,
 							library : {
