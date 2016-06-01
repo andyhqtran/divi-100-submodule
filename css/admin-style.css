@@ -462,6 +462,10 @@ h1#epanel-title {
 	font-size: 14px !important;
 }
 
+.epanel-box .option-preview img {
+	max-width: 100%;
+}
+
 /**
  * Yes / No toggle styling
  */
