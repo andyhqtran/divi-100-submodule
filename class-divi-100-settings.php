@@ -136,7 +136,7 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 		 * @return void
 		 */
 		function enqueue_scripts() {
-			if ( isset( $_GET['page'] ) && ( $this->settings['plugin_id'] === $_GET['page'] || 'et_divi_100_options' === $_GET['page'] ) ) {
+			if ( isset( $_GET['page'] ) && ( $this->settings['plugin_id'] === $_GET['page'] || ( 'et_divi_100_options' === $_GET['page'] && $this->has_most_updated_setup ) ) ) {
 				$dependencies = array( 'jquery' );
 
 				if ( $this->has_field_type( 'color' ) ) {
