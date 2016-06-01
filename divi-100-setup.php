@@ -62,6 +62,9 @@ if ( ! function_exists( 'et_divi_100_get_most_updated_plugin_slug' ) ) {
  */
 if ( ! function_exists( 'et_divi_100_get_setup_dir_path' ) ) {
 	function et_divi_100_get_setup_dir_path() {
+		// Get Divi 100 settings
+		$plugins = et_divi_100_settings();
+
 		// Get the latest version's plugin slug
 		$latest_version_slug = et_divi_100_get_most_updated_plugin_slug();
 
