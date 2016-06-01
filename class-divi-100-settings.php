@@ -12,6 +12,7 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 
 		protected $settings;
 		protected $saved_values;
+		protected $has_most_updated_setup;
 
 		function __construct( $settings ) {
 			// Define settings args
@@ -21,8 +22,13 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 			$saved_values       = maybe_unserialize( get_option( $this->settings['plugin_id'], array() ) );
 			$this->saved_values = $saved_values && is_array( $saved_values ) ? $saved_values : array();
 
+			// Has the most updated setup flag
+			$this->has_most_updated_setup = et_divi_100_get_most_updated_plugin_slug() === $this->settings['plugin_slug'];
+			$submenu_priority = $this->has_most_updated_setup ? 5 : 10;
+
 			// Register settings page and add admin scripts
-			add_action( 'admin_menu',            array( $this, 'add_submenu' ), 30 ); // Make sure the priority is higher than Divi 100's add_menu()
+			add_action( 'admin_menu',            array( $this, 'add_menu' ), 30 ); // Make sure the priority is higher than Divi 100's add_menu()
+			add_action( 'divi_100_submenu',      array( $this, 'add_submenu' ), $submenu_priority );
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		}
 
@@ -151,12 +157,25 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 		}
 
 		/**
+		 * Add menu
+		 * @return void
+		 */
+		function add_menu() {
+			if ( $this->has_most_updated_setup ) {
+				add_menu_page( 'Divi 100', 'Divi 100', 'switch_themes', 'et_divi_100_options', array( $this, 'render_settings' ) );
+
+				add_action( 'admin_head', array( $this, 'add_main_menu_scripts_styles' ), 20 ); // Make sure the priority is higher than Divi's add_menu()
+
+				do_action( 'divi_100_submenu' );
+			}
+		}
+
+		/**
 		 * Add submenu
 		 * @return void
 		 */
 		function add_submenu() {
-			if ( et_divi_100_get_most_updated_plugin_slug() == $this->settings['plugin_slug'] ) {
-				add_menu_page( 'Divi 100', 'Divi 100', 'switch_themes', 'et_divi_100_options', array( $this, 'render_settings' ) );
+			if ( $this->has_most_updated_setup ) {
 				add_submenu_page(
 					'et_divi_100_options',
 					esc_html( $this->settings['title'] ),
@@ -165,7 +184,6 @@ if ( ! class_exists( 'Divi_100_Settings' ) ) {
 					'et_divi_100_options',
 					array( $this, 'render_settings' )
 				);
-				add_action( 'admin_head', array( $this, 'add_main_menu_scripts_styles' ), 20 ); // Make sure the priority is higher than Divi's add_menu()
 			} else {
 				add_submenu_page(
 					'et_divi_100_options',
