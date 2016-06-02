@@ -13,7 +13,7 @@ if ( ! function_exists( 'et_divi_100_is_active' ) ) {
 	function et_divi_100_is_active() {
 		$current_theme = wp_get_theme();
 
-		if ( 'Divi' === $current_theme->get( 'Name' ) ) {
+		if ( 'Divi' === $current_theme->get( 'Name' ) || 'Divi' === $current_theme->get( 'Template' ) ) {
 			return true;
 		}
 
